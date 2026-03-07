@@ -8,7 +8,6 @@ const POINTS_SYSTEM = {
     6: 8, 7: 6, 8: 4, 9: 2, 10: 1
 };
 
-// Takım logoları (yerel dosyalardan)
 const TEAM_LOGOS = {
     'RedBull': 'Red_Bull_logo_PNG10.png',
     'Ferrari': 'ferrari.png',
@@ -40,16 +39,14 @@ async function fetchData() {
     error.style.display = 'none';
 
     try {
-        // İsim verilerini çek
         const namesResponse = await fetch(getSheetURL(NAMES_GID));
         const namesText = await namesResponse.text();
         const namesJsonString = namesText.substring(47).slice(0, -2);
         const namesData = JSON.parse(namesJsonString);
         
-        // Kullanıcı adı - İsim Soyisim eşleştirmesi
         if (namesData.table.rows) {
             namesData.table.rows.forEach((row, index) => {
-                if (index === 0 || !row.c) return; // Başlık satırını atla
+                if (index === 0 || !row.c) return;
                 const firstName = row.c[0] && row.c[0].v;
                 const lastName = row.c[1] && row.c[1].v;
                 const username = row.c[2] && row.c[2].v;
@@ -59,13 +56,11 @@ async function fetchData() {
             });
         }
 
-        // Takım verilerini çek
         const teamsResponse = await fetch(getSheetURL(TEAMS_GID));
         const teamsText = await teamsResponse.text();
         const teamsJsonString = teamsText.substring(47).slice(0, -2);
         const teamsData = JSON.parse(teamsJsonString);
         
-        // Pilot-Takım eşleştirmesini oluştur
         if (teamsData.table.rows) {
             teamsData.table.rows.forEach(row => {
                 if (row.c && row.c[1] && row.c[2]) {
@@ -78,7 +73,6 @@ async function fetchData() {
             });
         }
 
-        // Yarış verilerini çek
         const response = await fetch(getSheetURL(GID));
         const text = await response.text();
         const jsonString = text.substring(47).slice(0, -2);
@@ -109,7 +103,6 @@ function processData(data) {
         const driverName = cols[colIndex].label;
         if (!driverName) continue;
         
-        // GP sütununu atla (DRIVER_TEAMS'de olmayan)
         if (!DRIVER_TEAMS[driverName]) continue;
         
         let totalPoints = 0;
