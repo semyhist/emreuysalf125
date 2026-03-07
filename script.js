@@ -157,11 +157,14 @@ function renderDrivers() {
     const tbody = document.getElementById('driversBody');
     tbody.innerHTML = '';
 
+    const leaderPoints = driversData[0]?.points || 0;
+
     driversData.forEach((driver, index) => {
         const position = index + 1;
         const row = document.createElement('tr');
         const posClass = position <= 3 ? `p${position}` : '';
         const logoUrl = TEAM_LOGOS[driver.team] || '';
+        const gap = position > 1 ? leaderPoints - driver.points : '';
         
         row.innerHTML = `
             <td><div class="position ${posClass}">${position}</div></td>
@@ -177,7 +180,12 @@ function renderDrivers() {
                     <span class="team-name">${driver.team}</span>
                 </div>
             </td>
-            <td><div class="points">${driver.points}</div></td>
+            <td>
+                <div class="points">
+                    ${driver.points}
+                    ${gap ? `<span class="points-gap">-${gap}</span>` : ''}
+                </div>
+            </td>
         `;
 
         tbody.appendChild(row);

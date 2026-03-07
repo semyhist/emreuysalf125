@@ -70,6 +70,32 @@ h1 {
     margin-bottom: 30px;
 }
 
+.tab-btn {
+    flex: 1;
+    background: var(--f1-gray);
+    color: var(--text-secondary);
+    border: none;
+    padding: 15px 30px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-btn:hover {
+    background: var(--f1-light);
+    color: var(--text-primary);
+}
+
+.tab-btn.active {
+    background: var(--f1-light);
+    color: var(--f1-red);
+    border-bottom-color: var(--f1-red);
+}
+
 .loading {
     text-align: center;
     padding: 60px 20px;
@@ -131,6 +157,12 @@ thead th {
     border-bottom: 1px solid var(--f1-red);
 }
 
+thead th svg {
+    vertical-align: middle;
+    margin-right: 6px;
+    opacity: 0.7;
+}
+
 .pos-col {
     width: 70px;
     text-align: center !important;
@@ -149,7 +181,7 @@ thead th {
 }
 
 .points-col {
-    width: 100px;
+    width: 120px;
     text-align: right !important;
 }
 
@@ -219,6 +251,37 @@ tbody td {
     font-size: 1.1rem;
     text-align: right;
     color: var(--f1-red);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.points-gap {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+footer {
+    text-align: center;
+    padding: 40px 20px 30px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 50px;
+    opacity: 0.5;
+}
+
+footer a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+footer a:hover {
+    color: var(--f1-red);
+    opacity: 1;
 }
 
 @media (max-width: 768px) {
@@ -254,15 +317,13 @@ tbody td {
         font-size: 0.85rem;
     }
 
-    .refresh-btn {
-        width: 100%;
-        justify-content: center;
-        padding: 12px 20px;
-    }
-
     thead th {
         padding: 12px 10px;
         font-size: 0.7rem;
+    }
+
+    thead th svg {
+        display: none;
     }
 
     tbody td {
@@ -289,6 +350,10 @@ tbody td {
         font-size: 0.85rem;
     }
 
+    .driver-username {
+        font-size: 0.7rem;
+    }
+
     .team-logo {
         width: 24px;
         height: 24px;
@@ -300,6 +365,15 @@ tbody td {
 
     .points {
         font-size: 1rem;
+    }
+
+    .points-gap {
+        display: none;
+    }
+
+    footer {
+        padding: 30px 15px 20px;
+        font-size: 0.85rem;
     }
 }
 
