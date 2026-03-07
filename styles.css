@@ -317,9 +317,17 @@ footer a:hover {
         font-size: 0.85rem;
     }
 
+    .standings-card {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 380px;
+    }
+
     thead th {
-        padding: 12px 10px;
-        font-size: 0.7rem;
+        padding: 12px 6px;
+        font-size: 0.65rem;
     }
 
     thead th svg {
@@ -327,19 +335,23 @@ footer a:hover {
     }
 
     tbody td {
-        padding: 12px 10px;
+        padding: 12px 6px;
     }
 
     .pos-col {
-        width: 50px;
+        width: 40px;
+    }
+
+    .driver-col {
+        min-width: 110px;
     }
 
     .team-col {
-        display: none;
+        min-width: 90px;
     }
 
     .points-col {
-        width: 80px;
+        width: 60px;
     }
 
     .position {
