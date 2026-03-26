@@ -1,15 +1,10 @@
-const SHEET_ID = '1hP9NKLSjiJX2tWKQOeDNIGLH8q5q_q1CevSL08oY1n4';
-const GID = '920446674';
-const TEAMS_GID = '1303522310';
-const NAMES_GID = '1391237604';
+const spreadsheetId = '1hP9NKLSjiJX2tWKQOeDNIGLH8q5q_q1CevSL08oY1n4';
+const yarisGecmisGid = '354299981';
+const isimlerGid = '1391237604';
 
-const POINTS_SYSTEM = {
-    1: 25, 2: 18, 3: 15, 4: 12, 5: 10,
-    6: 8, 7: 6, 8: 4, 9: 2, 10: 1
-};
-
-const TEAM_LOGOS = {
+const takimLogolari = {
     'RedBull': 'Red_Bull_logo_PNG10.png',
+    'Red Bull Racing': 'Red_Bull_logo_PNG10.png',
     'Ferrari': 'ferrari.png',
     'Mercedes': 'mercedes.png',
     'McLaren': 'mclaren.png',
@@ -17,213 +12,210 @@ const TEAM_LOGOS = {
     'Alpine': 'alpine.png',
     'Williams': 'williams.png',
     'Racing Bulls': 'rbvisacashapp.png',
+    'RB': 'rbvisacashapp.png',
     'Kick Sauber': 'kicksauber.svg',
     'Haas': 'haas.png'
 };
 
-let DRIVER_TEAMS = {};
-let DRIVER_NAMES = {};
+let pilotTakimlar = {
+    'Omer_DeChavo': 'RB',
+    'Ulaş Gökkaya': 'Kick Sauber',
+    'emreuysal': 'Alpine',
+    'ghostshelby7': 'RB',
+    'Shaarl': 'Ferrari',
+    'ozzer0': 'Red Bull Racing',
+    'RaddEmir': 'Mercedes',
+    'RodrigoBecao5031': 'McLaren',
+    'semyhist': 'Williams',
+    'soylu': 'Aston Martin',
+    'TR_Adonis': 'Ferrari',
+    'sdevrim': 'McLaren',
+    'F1xEmma': 'Haas',
+    'berkecangul': 'Aston Martin',
+    'ERTKULA': 'Haas',
+    'kumeji': 'Kick Sauber',
+    'osurukbocegi14': 'Mercedes',
+    'varttolisad': 'Alpine',
+    'serefsamil': 'Red Bull Racing',
+    'AlonsoLaren': 'Williams'
+};
+let pilotIsimler = {};
+let pilotVerileri = [];
+let takimVerileri = [];
 
-function getSheetURL(gid) {
-    return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${gid}`;
+// /*
+// const teamsGid = '1303522310';
+// takimlari sheeetten cekmeyi denedik olmadi
+// pilotTakimlar = {};
+// */
+
+function sheetUrl(gid){
+    return `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&gid=${gid}`;
 }
 
-let driversData = [];
-let teamsData = [];
-
-async function fetchData() {
-    const loading = document.getElementById('loading');
-    const error = document.getElementById('error');
-
-    loading.style.display = 'block';
-    error.style.display = 'none';
-
+async function verileriCek(){
+    const yukleniyor = document.getElementById('loading');
+    const hata = document.getElementById('error');
+    yukleniyor.style.display = 'block';
+    hata.style.display = 'none';
     try {
-        const namesResponse = await fetch(getSheetURL(NAMES_GID));
-        const namesText = await namesResponse.text();
-        const namesJsonString = namesText.substring(47).slice(0, -2);
-        const namesData = JSON.parse(namesJsonString);
-        
-        if (namesData.table.rows) {
-            namesData.table.rows.forEach((row, index) => {
-                if (index === 0 || !row.c) return;
-                const firstName = row.c[0] && row.c[0].v;
-                const lastName = row.c[1] && row.c[1].v;
-                const username = row.c[2] && row.c[2].v;
-                if (username && firstName && lastName) {
-                    DRIVER_NAMES[username] = `${firstName} ${lastName}`;
-                }
+        const isimRes = await fetch(sheetUrl(isimlerGid));
+        const isimText = await isimRes.text();
+        const isimData = JSON.parse(isimText.substring(47).slice(0, -2));
+        if (isimData.table.rows) {
+            isimData.table.rows.forEach((row, i) => {
+                if (i === 0 || !row.c) return;
+                const ad = row.c[0]?.v?.trim();
+                const soyad = row.c[1]?.v?.trim();
+                const kullaniciAdi = row.c[2]?.v?.trim();
+                if (kullaniciAdi && ad && soyad) pilotIsimler[kullaniciAdi] = `${ad} ${soyad}`;
             });
         }
-
-        const teamsResponse = await fetch(getSheetURL(TEAMS_GID));
-        const teamsText = await teamsResponse.text();
-        const teamsJsonString = teamsText.substring(47).slice(0, -2);
-        const teamsData = JSON.parse(teamsJsonString);
-        
-        if (teamsData.table.rows) {
-            teamsData.table.rows.forEach(row => {
-                if (row.c && row.c[1] && row.c[2]) {
-                    const driver = row.c[1].v;
-                    const team = row.c[2].v;
-                    if (driver && team) {
-                        DRIVER_TEAMS[driver] = team;
-                    }
-                }
-            });
-        }
-
-        const response = await fetch(getSheetURL(GID));
-        const text = await response.text();
-        const jsonString = text.substring(47).slice(0, -2);
-        const data = JSON.parse(jsonString);
-        
-        processData(data);
-        loading.style.display = 'none';
-    } catch (err) {
-        console.error('Veri çekme hatası:', err);
-        loading.style.display = 'none';
-        error.style.display = 'block';
+        if (!pilotIsimler['ghostshelby7']) pilotIsimler['ghostshelby7'] = 'ghostshelby7';
+        if (!pilotIsimler['soylu']) pilotIsimler['soylu'] = 'Yusuf Soylu';
+        const yarisRes = await fetch(sheetUrl(yarisGecmisGid));
+        const yarisText = await yarisRes.text();
+        const yarisData = JSON.parse(yarisText.substring(47).slice(0, -2));
+        veriIsle(yarisData);
+        yukleniyor.style.display = 'none';
+    } catch(err) {
+        console.error(err);
+        console.log('test1');
+        yukleniyor.style.display = 'none';
+        hata.style.display = 'block';
     }
 }
 
-function processData(data) {
-    const cols = data.table.cols;
-    const rows = data.table.rows;
-    
-    if (!cols || !rows) {
+function veriIsle(data){
+    const kolonlar = data.table.cols;
+    const satirlar = data.table.rows;
+    if (!kolonlar || !satirlar) {
         document.getElementById('error').style.display = 'block';
         return;
     }
-
-    driversData = [];
-    const teamPoints = {};
-    
-    for (let colIndex = 0; colIndex < cols.length; colIndex++) {
-        const driverName = cols[colIndex].label;
-        if (!driverName) continue;
-        
-        if (!DRIVER_TEAMS[driverName]) continue;
-        
-        let totalPoints = 0;
-        
-        for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-            const row = rows[rowIndex];
-            if (!row || !row.c || !row.c[colIndex]) continue;
-            
-            const cell = row.c[colIndex];
-            if (cell && cell.v !== null && cell.v !== undefined) {
-                const position = parseInt(cell.v);
-                if (!isNaN(position) && POINTS_SYSTEM[position]) {
-                    totalPoints += POINTS_SYSTEM[position];
+    pilotVerileri = [];
+    const takimPuanlari = {};
+    const toplamYaris = satirlar.length;
+    for (let k = 1; k < kolonlar.length; k++) { // 0. kolon GP adi
+        const pilotAdi = kolonlar[k].label?.trim();
+        if (!pilotAdi) continue;
+        let toplamPuan = 0;
+        let oncekiPuan = 0;
+        for (let s = 0; s < satirlar.length; s++) {
+            const satir = satirlar[s];
+            if (!satir?.c?.[k]) continue;
+            const hucre = satir.c[k];
+            if (hucre?.v !== null && hucre?.v !== undefined) {
+                const pozisyon = parseInt(hucre.v);
+                // f1 puan tablosu
+                const puanTablosu = {1:25,2:18,3:15,4:12,5:10,6:8,7:6,8:4,9:2,10:1};
+                if (!isNaN(pozisyon) && puanTablosu[pozisyon]) {
+                    toplamPuan += puanTablosu[pozisyon];
+                    if (s < toplamYaris - 1) oncekiPuan += puanTablosu[pozisyon];
                 }
             }
         }
-        
-        const team = DRIVER_TEAMS[driverName];
-        
-        driversData.push({
-            name: driverName,
-            fullName: DRIVER_NAMES[driverName] || driverName,
-            team: team,
-            points: totalPoints
+        const takim = pilotTakimlar[pilotAdi] || 'Unknown';
+        pilotVerileri.push({
+            ad: pilotAdi,
+            tamIsim: pilotIsimler[pilotAdi] || pilotAdi,
+            takim: takim,
+            puan: toplamPuan,
+            oncekiPuan: oncekiPuan
         });
-
-        if (!teamPoints[team]) {
-            teamPoints[team] = 0;
-        }
-        teamPoints[team] += totalPoints;
+        if (!takimPuanlari[takim]) takimPuanlari[takim] = 0;
+        takimPuanlari[takim] += toplamPuan;
     }
-
-    driversData.sort((a, b) => b.points - a.points);
-
-    teamsData = Object.entries(teamPoints).map(([team, points]) => ({
-        team,
-        points
-    })).sort((a, b) => b.points - a.points);
-
-    renderDrivers();
-    renderTeams();
+    console.log('buraya girdi');
+    const oncekiSiralama = [...pilotVerileri]
+        .sort((a, b) => b.oncekiPuan - a.oncekiPuan)
+        .reduce((acc, pilot, i) => {
+            acc[pilot.ad] = i + 1;
+            return acc;
+        }, {});
+    pilotVerileri.sort((a, b) => b.puan - a.puan);
+    pilotVerileri.forEach((pilot, i) => {
+        pilot.oncekiPozisyon = oncekiSiralama[pilot.ad] || i + 1;
+    });
+    takimVerileri = Object.entries(takimPuanlari)
+        .map(([takim, puan]) => ({ takim, puan }))
+        .sort((a, b) => b.puan - a.puan);
+    pilotlariGoster();
+    takimlariGoster();
 }
 
-function renderDrivers() {
+function pilotlariGoster(){
     const tbody = document.getElementById('driversBody');
     tbody.innerHTML = '';
-
-    const leaderPoints = driversData[0]?.points || 0;
-
-    driversData.forEach((driver, index) => {
-        const position = index + 1;
+    const liderPuan = pilotVerileri[0]?.puan || 0;
+    pilotVerileri.forEach((pilot, i) => {
+        const pozisyon = i + 1;
         const row = document.createElement('tr');
-        const posClass = position <= 3 ? `p${position}` : '';
-        const logoUrl = TEAM_LOGOS[driver.team] || '';
-        const gap = position > 1 ? leaderPoints - driver.points : '';
-        
+        const posCss = pozisyon <= 3 ? `p${pozisyon}` : '';
+        const logo = takimLogolari[pilot.takim] || '';
+        const fark = pozisyon > 1 ? liderPuan - pilot.puan : '';
+        const prevPos = pilot.oncekiPozisyon || pozisyon;
+        let degisim = '';
+        if (prevPos < pozisyon) degisim = '<span class="pos-change down">&#9660;</span>';
+        else if (prevPos > pozisyon) degisim = '<span class="pos-change up">&#9650;</span>';
         row.innerHTML = `
-            <td><div class="position ${posClass}">${position}</div></td>
+            <td><div class="position ${posCss}">${pozisyon} ${degisim}</div></td>
             <td>
                 <div class="driver-info">
-                    <div class="driver-name">${driver.fullName}</div>
-                    <div class="driver-username">@${driver.name}</div>
+                    <div class="driver-name">${pilot.tamIsim}</div>
+                    <div class="driver-username">@${pilot.ad}</div>
                 </div>
             </td>
             <td>
                 <div class="team-info">
-                    <img src="${logoUrl}" alt="${driver.team}" class="team-logo" onerror="this.style.display='none'">
-                    <span class="team-name">${driver.team}</span>
+                    <img src="${logo}" alt="${pilot.takim}" class="team-logo" onerror="this.style.display='none'">
+                    <span class="team-name">${pilot.takim}</span>
                 </div>
             </td>
             <td>
                 <div class="points">
-                    ${driver.points}
-                    ${gap ? `<span class="points-gap">-${gap}</span>` : ''}
+                    ${pilot.puan}
+                    ${fark ? `<span class="points-gap">-${fark}</span>` : ''}
                 </div>
             </td>
         `;
-
         tbody.appendChild(row);
     });
 }
 
-function renderTeams() {
+function takimlariGoster(){
     const tbody = document.getElementById('teamsBody');
     tbody.innerHTML = '';
-
-    teamsData.forEach((team, index) => {
-        const position = index + 1;
+    takimVerileri.forEach((takim, i) => {
+        const pozisyon = i + 1;
         const row = document.createElement('tr');
-        const posClass = position <= 3 ? `p${position}` : '';
-        const logoUrl = TEAM_LOGOS[team.team] || '';
-        
+        const posCss = pozisyon <= 3 ? `p${pozisyon}` : '';
+        const logo = takimLogolari[takim.takim] || '';
         row.innerHTML = `
-            <td><div class="position ${posClass}">${position}</div></td>
+            <td><div class="position ${posCss}">${pozisyon}</div></td>
             <td>
                 <div class="team-info">
-                    <img src="${logoUrl}" alt="${team.team}" class="team-logo" onerror="this.style.display='none'">
-                    <span class="driver-name">${team.team}</span>
+                    <img src="${logo}" alt="${takim.takim}" class="team-logo" onerror="this.style.display='none'">
+                    <span class="driver-name">${takim.takim}</span>
                 </div>
             </td>
-            <td><div class="points">${team.points}</div></td>
+            <td><div class="points">${takim.puan}</div></td>
         `;
-
         tbody.appendChild(row);
     });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetchData();
-
+    verileriCek();
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const tab = btn.dataset.tab;
-            
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
             btn.classList.add('active');
             document.getElementById(tab + 'Tab').classList.add('active');
         });
     });
 });
 
-setInterval(fetchData, 120000);
+setInterval(verileriCek, 120000); // 2 dakikada bir yenile

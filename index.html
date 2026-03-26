@@ -3,104 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EU F1 25 Şampiyonası</title>
+    <title>EU F1 25 Ligi</title>
+    <link rel="icon" href="eulogo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">EU</div>
-            <h1>F1 25 LİGİ</h1>
-            <div class="season">2026</div>
-        </header>
+<div class="container">
+    <header>
+        <img src="eulogo.png" alt="EU" class="eu-logo">
+        <h1>F1 25 LİGİ</h1>
+        <div class="season">2026</div>
+    </header>
 
-        <nav class="tabs">
-            <button class="tab-btn active" data-tab="drivers">SÜRÜCÜLER</button>
-            <button class="tab-btn" data-tab="teams">TAKIMLAR</button>
-        </nav>
+    <nav class="tabs">
+        <button class="tab-btn active" data-tab="drivers">SÜRÜCÜLER</button>
+        <button class="tab-btn" data-tab="teams">TAKIMLAR</button>
+    </nav>
 
-        <div id="loading" class="loading">
-            <div class="spinner"></div>
-        </div>
+    <div id="loading" class="loading"><div class="spinner"></div></div>
+    <div id="error" class="error" style="display:none;"><p>Veriler yüklenirken hata oluştu</p></div>
 
-        <div id="error" class="error" style="display: none;">
-            <p>Veriler yüklenirken hata oluştu</p>
-        </div>
-
-        <div id="driversTab" class="tab-content active">
-            <div class="standings-card">
-                <table id="driversTable">
-                    <thead>
-                        <tr>
-                            <th class="pos-col">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-                                </svg>
-                                POS
-                            </th>
-                            <th class="driver-col">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"/>
-                                </svg>
-                                SÜRÜCÜ
-                            </th>
-                            <th class="team-col">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z"/>
-                                </svg>
-                                TAKIM
-                            </th>
-                            <th class="points-col">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V13H17V17Z"/>
-                                </svg>
-                                PUAN
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="driversBody"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="teamsTab" class="tab-content">
-            <div class="standings-card">
-                <table id="teamsTable">
-                    <thead>
-                        <tr>
-                            <th class="pos-col">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-                                </svg>
-                                POS
-                            </th>
-                            <th class="team-col-wide">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z"/>
-                                </svg>
-                                TAKIM
-                            </th>
-                            <th class="points-col">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V13H17V17Z"/>
-                                </svg>
-                                PUAN
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="teamsBody"></tbody>
-                </table>
-            </div>
+    <div id="driversTab" class="tab-content active">
+        <div class="standings-card">
+            <table id="driversTable">
+                <thead>
+                    <tr>
+                        <th class="pos-col">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                            POS
+                        </th>
+                        <th class="driver-col">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"/></svg>
+                            SÜRÜCÜ
+                        </th>
+                        <th class="team-col">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z"/></svg>
+                            TAKIM
+                        </th>
+                        <th class="points-col">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V13H17V17Z"/></svg>
+                            PUAN
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="driversBody"></tbody>
+            </table>
         </div>
     </div>
 
-    <footer>
-        <p>Created by <a href="https://semihaydin.netlify.app" target="_blank">Semih Aydın</a></p>
-    </footer>
+    <div id="teamsTab" class="tab-content">
+        <div class="standings-card">
+            <table id="teamsTable">
+                <thead>
+                    <tr>
+                        <th class="pos-col">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                            POS
+                        </th>
+                        <th class="team-col-wide">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z"/></svg>
+                            TAKIM
+                        </th>
+                        <th class="points-col">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V13H17V17Z"/></svg>
+                            PUAN
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="teamsBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-    <script src="script.js"></script>
+<footer>
+    <p>Created by <a href="https://semihaydin.netlify.app" target="_blank">Semih Aydın</a></p>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
